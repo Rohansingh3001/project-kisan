@@ -303,7 +303,7 @@ async function analyzeWithHuggingFace(imageData: string): Promise<CropAnalysisRe
           };
         }
       }
-    } catch (error) {
+    } catch {
       console.log(`Model ${model} failed, trying next...`);
       continue;
     }
@@ -556,7 +556,7 @@ function getCurrentSeason(): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const { imageData, language = 'en' } = await request.json();
+    const { imageData } = await request.json();
 
     if (!imageData) {
       return NextResponse.json(

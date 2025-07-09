@@ -325,7 +325,7 @@ export async function POST(request: NextRequest) {
           body: imageBuffer,
         });
       }
-    } catch (error) {
+    } catch {
       console.log('Crop disease model failed, trying fallback...');
       response = null;
     }
@@ -431,7 +431,7 @@ export async function POST(request: NextRequest) {
         if (currentScore > matchScore) {
           matchScore = currentScore;
           diseaseKey = key;
-          bestMatch = key;
+          // bestMatch = key; // Removed unused variable
         }
       }
     }
