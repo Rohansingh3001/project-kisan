@@ -313,7 +313,7 @@ async function analyzeWithHuggingFace(imageData: string): Promise<CropAnalysisRe
 }
 
 // Rule-based analysis as final fallback
-function analyzeWithRules(imageData: string): CropAnalysisResult {
+function analyzeWithRules(): CropAnalysisResult {
   // This is a simple fallback that provides general advice
   return {
     disease: "Visual Analysis Required",
@@ -632,7 +632,7 @@ export async function POST(request: NextRequest) {
     // Final fallback
     if (!analysisResult) {
       console.log('Using rule-based analysis as fallback...');
-      analysisResult = analyzeWithRules(imageData);
+      analysisResult = analyzeWithRules();
       usedService = 'rules-based';
     }
 

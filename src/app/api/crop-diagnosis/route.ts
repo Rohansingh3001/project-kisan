@@ -390,13 +390,11 @@ export async function POST(request: NextRequest) {
 
     // Find matching disease info with improved matching logic
     let diseaseKey = 'healthy';
-    let bestMatch = '';
     let matchScore = 0;
 
     // First try exact match
     if (diseaseInfo[diseaseLabel]) {
       diseaseKey = diseaseLabel;
-      bestMatch = diseaseLabel;
       matchScore = 100;
     } else {
       // Try partial matching with scoring
