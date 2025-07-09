@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Camera, TrendingUp, FileText, Mic, Smartphone, Star, PlayCircle, Users, Shield, Globe, CheckCircle, Sprout, Wheat, Menu } from 'lucide-react';
+import { ArrowRight, Camera, TrendingUp, FileText, Mic, Smartphone, Star, PlayCircle, Users, Shield, Globe, CheckCircle, Sprout, Wheat } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
@@ -574,7 +574,7 @@ export default function LandingPage() {
                 </div>
 
                 <blockquote className="text-gray-600 dark:text-gray-300 mb-4 text-sm italic leading-relaxed">
-                  "{testimonial.quote}"
+                  &ldquo;{testimonial.quote}&rdquo;
                 </blockquote>
 
                 <div className="flex items-center justify-between text-xs">

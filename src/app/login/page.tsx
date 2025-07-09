@@ -1,19 +1,19 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Eye, EyeOff, User, Lock, Phone, ArrowRight, Leaf, ArrowLeft, Mail } from 'lucide-react';
+import { Eye, EyeOff, Lock, Phone, ArrowRight, Leaf, ArrowLeft, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
-  signInWithEmail, 
-  signInWithGoogle, 
-  initializeRecaptcha, 
-  sendSMSVerification, 
-  verifyOTP, 
+  loginWithEmail, 
+  loginWithGoogle, 
+  setupRecaptcha, 
+  sendOTP,
+  verifyOTP,
   getAuthErrorMessage 
 } from '@/lib/auth';
-import { ConfirmationResult } from 'firebase/auth';
+import { ConfirmationResult, AuthError, RecaptchaVerifier } from 'firebase/auth';
 
 type LoginStep = 'input' | 'otp';
 
@@ -30,6 +30,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
+  const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifier | null>(null);
   const [otpTimer, setOtpTimer] = useState(0);
   const router = useRouter();
   const { login } = useAuth();
@@ -51,7 +52,7 @@ export default function LoginPage() {
       return;
     }
     
-    const { user, profile } = await signInWithEmail(formData.email, formData.password);
+    const { user, profile } = await loginWithEmail(formData.email, formData.password);
     
     if (profile) {
       login(user, profile);
@@ -68,16 +69,16 @@ export default function LoginPage() {
     }
 
     // Initialize reCAPTCHA
-    const recaptchaVerifier = initializeRecaptcha('recaptcha-container');
+    const recaptchaVerifier = setupRecaptcha('recaptcha-container');
     
     try {
-      const confirmation = await sendSMSVerification(formData.phone, recaptchaVerifier);
+      const confirmation = await sendOTP(formData.phone, recaptchaVerifier);
       setConfirmationResult(confirmation);
       setStep('otp');
       setOtpTimer(60);
       setError('');
-    } catch (error: any) {
-      setError(getAuthErrorMessage(error));
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error as AuthError));
       recaptchaVerifier.clear();
     }
   };
@@ -97,21 +98,21 @@ export default function LoginPage() {
       } else {
         setError('Profile not found. Please create an account first.');
       }
-    } catch (error: any) {
-      setError(getAuthErrorMessage(error));
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error as AuthError));
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
-      const { user, profile } = await signInWithGoogle();
+      const { user, profile } = await loginWithGoogle();
       
       if (profile) {
         login(user, profile);
         router.push('/dashboard');
       }
-    } catch (error: any) {
-      setError(getAuthErrorMessage(error));
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error as AuthError));
     }
   };
 
@@ -128,9 +129,9 @@ export default function LoginPage() {
       } else {
         await handlePhoneLogin();
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Login error:', error);
-      setError(getAuthErrorMessage(error));
+      setError(getAuthErrorMessage(error as AuthError));
     } finally {
       setLoading(false);
     }
@@ -141,13 +142,13 @@ export default function LoginPage() {
     
     setLoading(true);
     try {
-      const recaptchaVerifier = initializeRecaptcha('recaptcha-container');
-      const confirmation = await sendSMSVerification(formData.phone, recaptchaVerifier);
+      const recaptchaVerifier = setupRecaptcha('recaptcha-container');
+      const confirmation = await sendOTP(formData.phone, recaptchaVerifier);
       setConfirmationResult(confirmation);
       setOtpTimer(60);
       setError('');
-    } catch (error: any) {
-      setError(getAuthErrorMessage(error));
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error as AuthError));
     } finally {
       setLoading(false);
     }
@@ -408,7 +409,7 @@ export default function LoginPage() {
 
               {/* Sign Up Link */}
               <div className="mt-8 text-center">
-                <span className="text-gray-600">Don't have an account? </span>
+                <span className="text-gray-600">Don&apos;t have an account? </span>
                 <Link
                   href="/signup"
                   className="font-semibold text-green-600 hover:text-green-500"

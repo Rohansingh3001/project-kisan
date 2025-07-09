@@ -6,14 +6,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
-  signUpWithEmail, 
-  signUpWithPhone, 
-  signInWithGoogle, 
-  initializeRecaptcha, 
-  sendSMSVerification, 
+  signupWithEmail, 
+  signupWithPhone,
+  loginWithGoogle, 
+  setupRecaptcha, 
+  sendOTP, 
+  verifyOTP,
   getAuthErrorMessage 
 } from '@/lib/auth';
-import { ConfirmationResult } from 'firebase/auth';
+import { ConfirmationResult, AuthError, RecaptchaVerifier } from 'firebase/auth';
 
 type SignupStep = 'personal' | 'farm' | 'security' | 'otp';
 type SignupMethod = 'email' | 'phone';
@@ -131,14 +132,14 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      const recaptchaVerifier = initializeRecaptcha('recaptcha-container');
-      const confirmation = await sendSMSVerification(formData.phone, recaptchaVerifier);
+      const recaptchaVerifier = setupRecaptcha('recaptcha-container');
+      const confirmation = await sendOTP(formData.phone, recaptchaVerifier);
       setConfirmationResult(confirmation);
       setCurrentStep('otp');
       setOtpTimer(60);
       setError('');
-    } catch (error: any) {
-      setError(getAuthErrorMessage(error));
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error as AuthError));
     } finally {
       setLoading(false);
     }
@@ -153,7 +154,7 @@ export default function SignupPage() {
       cropTypes: formData.cropTypes
     };
 
-    const { user, profile } = await signUpWithEmail(formData.email, formData.password, userProfile);
+    const { user, profile } = await signupWithEmail(formData.email, formData.password, formData.name);
     login(user, profile);
     router.push('/dashboard');
   };
@@ -173,11 +174,10 @@ export default function SignupPage() {
       cropTypes: formData.cropTypes
     };
 
-    const { user, profile } = await signUpWithPhone(
-      formData.phone, 
-      formData.otp, 
+    const { user, profile } = await signupWithPhone(
       confirmationResult, 
-      userProfile
+      formData.otp, 
+      { name: formData.name }
     );
     login(user, profile);
     router.push('/dashboard');
@@ -185,14 +185,14 @@ export default function SignupPage() {
 
   const handleGoogleSignup = async () => {
     try {
-      const { user, profile } = await signInWithGoogle();
+      const { user, profile } = await loginWithGoogle();
       
       if (profile) {
         login(user, profile);
         router.push('/dashboard');
       }
-    } catch (error: any) {
-      setError(getAuthErrorMessage(error));
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error as AuthError));
     }
   };
 
@@ -204,8 +204,8 @@ export default function SignupPage() {
       setLoading(true);
       try {
         await handlePhoneSignup();
-      } catch (error: any) {
-        setError(getAuthErrorMessage(error));
+      } catch (error: unknown) {
+        setError(getAuthErrorMessage(error as AuthError));
       } finally {
         setLoading(false);
       }
@@ -222,9 +222,9 @@ export default function SignupPage() {
       } else {
         await sendOTPForSignup();
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Signup error:', error);
-      setError(getAuthErrorMessage(error));
+      setError(getAuthErrorMessage(error as AuthError));
       setLoading(false);
     }
   };
@@ -234,13 +234,13 @@ export default function SignupPage() {
     
     setLoading(true);
     try {
-      const recaptchaVerifier = initializeRecaptcha('recaptcha-container');
-      const confirmation = await sendSMSVerification(formData.phone, recaptchaVerifier);
+      const recaptchaVerifier = setupRecaptcha('recaptcha-container');
+      const confirmation = await sendOTP(formData.phone, recaptchaVerifier);
       setConfirmationResult(confirmation);
       setOtpTimer(60);
       setError('');
-    } catch (error: any) {
-      setError(getAuthErrorMessage(error));
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error as AuthError));
     } finally {
       setLoading(false);
     }
@@ -497,7 +497,7 @@ export default function SignupPage() {
           <Phone className="w-12 h-12 text-blue-600 mx-auto mb-3" />
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Phone Verification</h3>
           <p className="text-gray-600">
-            We'll send a verification code to your phone number to complete the registration.
+            We&apos;ll send a verification code to your phone number to complete the registration.
           </p>
         </div>
       )}

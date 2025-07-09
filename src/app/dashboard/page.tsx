@@ -57,8 +57,12 @@ export default function Dashboard() {
               <User className="w-6 h-6 lg:w-8 lg:h-8" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-white truncate">{profile?.name || 'User'}</h3>
-              <p className="text-sm lg:text-base text-gray-600 dark:text-gray-300">Farmer • {profile?.location || 'India'}</p>
+              <h3 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-white truncate">
+                {profile?.name || user?.displayName || user?.email?.split('@')[0] || 'User'}
+              </h3>
+              <p className="text-sm lg:text-base text-gray-600 dark:text-gray-300">
+                {user?.email ? 'Verified Farmer' : 'Farmer'} • {profile?.location || 'India'}
+              </p>
               {!isOnline && (
                 <p className="text-xs text-yellow-600 dark:text-yellow-400 mt-1">
                   ⚠️ Profile data may be outdated (offline mode)
@@ -445,7 +449,7 @@ export default function Dashboard() {
         <div className="bg-yellow-500 dark:bg-yellow-600 text-white px-4 py-2">
           <div className="max-w-7xl mx-auto flex items-center justify-center space-x-2">
             <WifiOff className="w-4 h-4" />
-            <span className="text-sm font-medium">You're currently offline. Some features may be limited.</span>
+            <span className="text-sm font-medium">You&apos;re currently offline. Some features may be limited.</span>
           </div>
         </div>
       )}
