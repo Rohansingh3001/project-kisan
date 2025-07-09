@@ -1,4 +1,16 @@
+
 import { NextRequest, NextResponse } from 'next/server';
+
+// Type for AI crop analysis result
+interface CropAnalysisResult {
+  disease: string;
+  confidence: number;
+  severity: string;
+  description: string;
+  plantType?: string;
+  affectedParts?: string[];
+  symptoms?: string[];
+}
 
 // API Keys for different services
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -132,7 +144,7 @@ const diseaseInfo: Record<string, { severity: string; treatment: string[]; preve
 };
 
 // OpenAI Vision API function
-async function analyzeWithOpenAI(imageData: string): Promise<any> {
+async function analyzeWithOpenAI(imageData: string): Promise<CropAnalysisResult> {
   if (!OPENAI_API_KEY) {
     throw new Error('OpenAI API key not configured');
   }
@@ -199,7 +211,7 @@ Respond in JSON format:
 }
 
 // Google Vision API function
-async function analyzeWithGoogleVision(imageData: string): Promise<any> {
+async function analyzeWithGoogleVision(imageData: string): Promise<CropAnalysisResult> {
   if (!GOOGLE_VISION_API_KEY) {
     throw new Error('Google Vision API key not configured');
   }
@@ -260,7 +272,7 @@ async function analyzeWithGoogleVision(imageData: string): Promise<any> {
 }
 
 // Hugging Face fallback
-async function analyzeWithHuggingFace(imageData: string): Promise<any> {
+async function analyzeWithHuggingFace(imageData: string): Promise<CropAnalysisResult> {
   if (!HF_API_KEY) {
     throw new Error('Hugging Face API key not configured');
   }
@@ -301,7 +313,7 @@ async function analyzeWithHuggingFace(imageData: string): Promise<any> {
 }
 
 // Rule-based analysis as final fallback
-function analyzeWithRules(imageData: string): any {
+function analyzeWithRules(imageData: string): CropAnalysisResult {
   // This is a simple fallback that provides general advice
   return {
     disease: "Visual Analysis Required",
@@ -312,7 +324,7 @@ function analyzeWithRules(imageData: string): any {
 }
 
 // Groq Vision API function (using Llama Vision model)
-async function analyzeWithGroq(imageData: string): Promise<any> {
+async function analyzeWithGroq(imageData: string): Promise<CropAnalysisResult> {
   if (!GROQ_API_KEY) {
     throw new Error('Groq API key not configured');
   }
@@ -412,7 +424,7 @@ If the plant appears healthy, use "healthy" as the disease name.`
 }
 
 // Gemini Vision API function (Google's most advanced vision model)
-async function analyzeWithGemini(imageData: string): Promise<any> {
+async function analyzeWithGemini(imageData: string): Promise<CropAnalysisResult> {
   if (!GEMINI_API_KEY) {
     throw new Error('Gemini API key not configured');
   }
