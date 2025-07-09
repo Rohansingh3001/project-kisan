@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import Image from 'next/image';
-import { Camera, Upload, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
+import { Camera, Upload, Loader2, AlertCircle, CheckCircle, X } from 'lucide-react';
 
 interface DiagnosisResult {
   disease: string;
@@ -10,6 +10,17 @@ interface DiagnosisResult {
   severity: string;
   treatment: string[];
   prevention: string[];
+  description?: string;
+  plantType?: string;
+  affectedParts?: string[];
+  symptoms?: string[];
+  modelUsed?: string;
+  analysisMethod?: string;
+  additionalInfo?: {
+    region: string;
+    season: string;
+    commonInRegion: boolean;
+  };
 }
 
 export default function CropDiagnosis() {
@@ -17,18 +28,67 @@ export default function CropDiagnosis() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<DiagnosisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showCamera, setShowCamera] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
+  const processFile = (file: File) => {
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      setError('Please select a valid image file (JPEG, PNG, etc.)');
+      return;
+    }
+
+    // Check file size (10MB limit)
+    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+    if (file.size > maxSize) {
+      setError('File size must be less than 10MB. Please choose a smaller image.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setSelectedImage(e.target?.result as string);
+      setResult(null);
+      setError(null);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setSelectedImage(e.target?.result as string);
-        setResult(null);
-        setError(null);
-      };
-      reader.readAsDataURL(file);
+      processFile(file);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+
+    const files = Array.from(e.dataTransfer.files);
+    const imageFile = files.find(file => file.type.startsWith('image/'));
+    
+    if (imageFile) {
+      processFile(imageFile);
+    } else {
+      setError('Please drop a valid image file');
     }
   };
 
@@ -39,41 +99,85 @@ export default function CropDiagnosis() {
     setError(null);
 
     try {
-      // TODO: Integrate with Google Vertex AI Gemini Vision
-      // For now, we'll simulate the API call
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      console.log('Starting Groq-powered crop analysis...');
+      
+      const response = await fetch('/api/crop-diagnosis-v2', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imageData: selectedImage,
+          language: 'en'
+        }),
+      });
 
-      // Mock result - replace with actual Gemini Vision API call
-      const mockResult: DiagnosisResult = {
-        disease: "Tomato Late Blight (Phytophthora infestans)",
-        confidence: 85,
-        severity: "Moderate",
-        treatment: [
-          "Apply copper-based fungicide immediately",
-          "Remove affected leaves and dispose properly",
-          "Improve air circulation around plants",
-          "Reduce watering frequency and avoid overhead watering"
-        ],
-        prevention: [
-          "Plant resistant varieties next season",
-          "Ensure proper spacing between plants",
-          "Apply preventive fungicide during humid conditions",
-          "Monitor weather conditions and act preventively"
-        ]
-      };
+      const result = await response.json();
+      
+      console.log('API Response:', result);
 
-      setResult(mockResult);
+      if (!response.ok) {
+        throw new Error(result.error || `Server error: ${response.status}`);
+      }
+
+      // Validate the response structure
+      if (!result.disease || !result.treatment || !result.prevention) {
+        throw new Error('Invalid response format from server');
+      }
+
+      setResult(result);
     } catch (error) {
       console.error('Failed to analyze the image:', error);
-      setError("Failed to analyze the image. Please try again.");
+      const errorMessage = error instanceof Error ? error.message : "Failed to analyze the image. Please try again.";
+      setError(errorMessage);
     } finally {
       setIsAnalyzing(false);
     }
   };
 
-  const captureFromCamera = () => {
-    // TODO: Implement camera capture functionality
-    alert("Camera capture will be implemented with proper mobile integration");
+  const captureFromCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: 'environment' } // Use back camera on mobile
+      });
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        streamRef.current = stream;
+        setShowCamera(true);
+      }
+    } catch (error) {
+      console.error('Failed to access camera:', error);
+      setError("Failed to access camera. Please try uploading an image instead.");
+    }
+  };
+
+  const capturePhoto = () => {
+    if (videoRef.current && canvasRef.current) {
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
+      
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0);
+        const imageData = canvas.toDataURL('image/jpeg');
+        setSelectedImage(imageData);
+        stopCamera();
+        setResult(null);
+        setError(null);
+      }
+    }
+  };
+
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    setShowCamera(false);
   };
 
   return (
@@ -125,28 +229,46 @@ export default function CropDiagnosis() {
                   </div>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto">
-                    <Camera className="w-8 h-8 text-gray-400" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                      Upload Plant Photo
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                      Choose a clear image of the affected plant part
-                    </p>
-                    <div className="flex gap-2 justify-center">
+                <div 
+                  className={`border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 ${
+                    isDragOver 
+                      ? 'border-green-500 bg-green-50 dark:bg-green-900/20' 
+                      : 'border-gray-300 dark:border-gray-600 hover:border-green-400 dark:hover:border-green-500'
+                  }`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  <div className="space-y-4">
+                    <div className="w-16 h-16 mx-auto bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                      <Upload className="w-8 h-8 text-green-600 dark:text-green-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                        {isDragOver ? 'Drop your image here' : 'Upload Crop Image'}
+                      </h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                        {isDragOver 
+                          ? 'Release to upload the image' 
+                          : 'Drag and drop an image here, or click to browse'
+                        }
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-6">
+                        Supports: JPG, PNG, WEBP (Max: 10MB)
+                      </p>
+                    </div>
+                    
+                    <div className="flex gap-3 justify-center">
                       <button
                         onClick={() => fileInputRef.current?.click()}
-                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+                        className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2 shadow-md"
                       >
                         <Upload className="w-4 h-4" />
-                        Upload Image
+                        Choose File
                       </button>
                       <button
                         onClick={captureFromCamera}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-md"
                       >
                         <Camera className="w-4 h-4" />
                         Take Photo
@@ -201,15 +323,74 @@ export default function CropDiagnosis() {
                   <h3 className="text-lg font-bold text-green-900 dark:text-green-100">
                     {result.disease}
                   </h3>
-                  <div className="flex gap-4 mt-2">
+                  <div className="flex flex-wrap gap-2 mt-2">
                     <span className="text-sm bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 px-2 py-1 rounded">
                       {result.confidence}% Confidence
                     </span>
                     <span className="text-sm bg-yellow-100 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded">
                       {result.severity} Severity
                     </span>
+                    {result.plantType && (
+                      <span className="text-sm bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
+                        {result.plantType} Plant
+                      </span>
+                    )}
+                    {result.modelUsed && (
+                      <span className="text-sm bg-purple-100 dark:bg-purple-800 text-purple-800 dark:text-purple-200 px-2 py-1 rounded">
+                        {result.modelUsed.toUpperCase()} AI
+                      </span>
+                    )}
+                    {result.additionalInfo?.season && (
+                      <span className="text-sm bg-orange-100 dark:bg-orange-800 text-orange-800 dark:text-orange-200 px-2 py-1 rounded">
+                        {result.additionalInfo.season} Season
+                      </span>
+                    )}
                   </div>
                 </div>
+
+                {/* Analysis Details */}
+                {(result.symptoms && result.symptoms.length > 0) || (result.affectedParts && result.affectedParts.length > 0) || result.description && (
+                  <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-3">
+                      🔍 Analysis Details
+                    </h4>
+                    
+                    {result.affectedParts && result.affectedParts.length > 0 && (
+                      <div className="mb-3">
+                        <h5 className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">Affected Parts:</h5>
+                        <div className="flex flex-wrap gap-2">
+                          {result.affectedParts.map((part, index) => (
+                            <span key={index} className="text-xs bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 px-2 py-1 rounded">
+                              {part}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {result.symptoms && result.symptoms.length > 0 && (
+                      <div className="mb-3">
+                        <h5 className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">Observed Symptoms:</h5>
+                        <div className="flex flex-wrap gap-2">
+                          {result.symptoms.map((symptom, index) => (
+                            <span key={index} className="text-xs bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">
+                              {symptom}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {result.description && (
+                      <div>
+                        <h5 className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">AI Analysis:</h5>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 italic">
+                          {result.description}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                   <h4 className="font-medium text-gray-900 dark:text-white mb-3">
@@ -260,6 +441,56 @@ export default function CropDiagnosis() {
             )}
           </div>
         </div>
+
+        {/* Camera Modal */}
+        {showCamera && (
+          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                  Take Photo
+                </h3>
+                <button
+                  onClick={stopCamera}
+                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="relative">
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    className="w-full rounded-lg"
+                  />
+                  <canvas
+                    ref={canvasRef}
+                    className="hidden"
+                  />
+                </div>
+                
+                <div className="flex gap-2 justify-center">
+                  <button
+                    onClick={capturePhoto}
+                    className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+                  >
+                    <Camera className="w-4 h-4" />
+                    Capture
+                  </button>
+                  <button
+                    onClick={stopCamera}
+                    className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
