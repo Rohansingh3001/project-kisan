@@ -153,7 +153,7 @@ export const getAuthErrorMessage = (error: { code?: string; message?: string }) 
 };
 
 // Verify OTP and sign in
-export const verifyOTP = async (confirmationResult: any, otp: string) => {
+export const verifyOTP = async (confirmationResult: { confirm: (otp: string) => Promise<{ user: FirebaseUser }> }, otp: string) => {
   try {
     const userCredential = await confirmationResult.confirm(otp);
     const profile = createProfileFromAuth(userCredential.user);
@@ -165,7 +165,7 @@ export const verifyOTP = async (confirmationResult: any, otp: string) => {
 };
 
 // Phone signup (for users who want to create account with phone)
-export const signupWithPhone = async (confirmationResult: any, otp: string, userProfile: Partial<UserProfile>) => {
+export const signupWithPhone = async (confirmationResult: { confirm: (otp: string) => Promise<{ user: FirebaseUser }> }, otp: string, userProfile: Partial<UserProfile>) => {
   try {
     const userCredential = await confirmationResult.confirm(otp);
     

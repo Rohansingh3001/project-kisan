@@ -13,7 +13,7 @@ import {
   verifyOTP,
   getAuthErrorMessage 
 } from '@/lib/auth';
-import { ConfirmationResult, AuthError, RecaptchaVerifier } from 'firebase/auth';
+import { ConfirmationResult, AuthError } from 'firebase/auth';
 
 type LoginStep = 'input' | 'otp';
 
@@ -30,7 +30,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
-  const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifier | null>(null);
   const [otpTimer, setOtpTimer] = useState(0);
   const router = useRouter();
   const { login } = useAuth();

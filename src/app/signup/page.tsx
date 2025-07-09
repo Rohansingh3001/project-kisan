@@ -11,10 +11,9 @@ import {
   loginWithGoogle, 
   setupRecaptcha, 
   sendOTP, 
-  verifyOTP,
   getAuthErrorMessage 
 } from '@/lib/auth';
-import { ConfirmationResult, AuthError, RecaptchaVerifier } from 'firebase/auth';
+import { ConfirmationResult, AuthError } from 'firebase/auth';
 
 type SignupStep = 'personal' | 'farm' | 'security' | 'otp';
 type SignupMethod = 'email' | 'phone';
@@ -146,14 +145,6 @@ export default function SignupPage() {
   };
 
   const handleEmailSignup = async () => {
-    const userProfile = {
-      name: formData.name,
-      phone: formData.phone,
-      location: formData.location,
-      farmSize: formData.farmSize,
-      cropTypes: formData.cropTypes
-    };
-
     const { user, profile } = await signupWithEmail(formData.email, formData.password, formData.name);
     login(user, profile);
     router.push('/dashboard');
@@ -164,15 +155,6 @@ export default function SignupPage() {
       setError('Please enter the OTP code');
       return;
     }
-
-    const userProfile = {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      location: formData.location,
-      farmSize: formData.farmSize,
-      cropTypes: formData.cropTypes
-    };
 
     const { user, profile } = await signupWithPhone(
       confirmationResult, 
