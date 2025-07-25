@@ -9,7 +9,7 @@ export default function GetApp() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">GetAgrosaathi App</h1>
         </div>
         <p className="text-gray-700 dark:text-gray-300 mb-4">Download theAgrosaathi mobile app for the best farming experience.</p>
-        <a href="https://agrisaarthi.com/app" target="_blank" rel="noopener" className="inline-block bg-green-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:bg-green-700 transition-all duration-200">Download Now</a>
+        <a href="https://Agrosaathi.com/app" target="_blank" rel="noopener" className="inline-block bg-green-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:bg-green-700 transition-all duration-200">Download Now</a>
         <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">Available for Android & iOS.</div>
       </div>
     </div>

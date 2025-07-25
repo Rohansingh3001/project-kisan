@@ -43,7 +43,7 @@ export default function PrivacyPage() {
             <p>We implement industry-standard security measures to protect your data and never sell your personal information to third parties.</p>
             
             <h2 className="text-xl font-semibold text-gray-900 mt-6 mb-3">Contact Us</h2>
-            <p>If you have questions about this privacy policy, please contact us at privacy@agrisaarthi.com</p>
+            <p>If you have questions about this privacy policy, please contact us at privacy@Agrosaathi.com</p>
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@
 
 ## 🚀 Overview
 
-AgriSaarthi is a comprehensive AI-powered farming assistant built specifically for Indian farmers. It combines the power of Google AI technologies to provide instant crop disease diagnosis, real-time market analysis, government scheme navigation, and voice-first interaction in local languages.
+Agrosaathi is a comprehensive AI-powered farming assistant built specifically for Indian farmers. It combines the power of Google AI technologies to provide instant crop disease diagnosis, real-time market analysis, government scheme navigation, and voice-first interaction in local languages.
 
 ### 🎯 Core Features
 
@@ -179,7 +179,7 @@ MARKET_API_KEY=
 
 ## 🗣️ Language Support
 
-AgriSaarthi supports **22+ Indian languages** to ensure every farmer can use the app in their native language:
+Agrosaathi supports **22+ Indian languages** to ensure every farmer can use the app in their native language:
 
 - **Hindi (हिन्दी)** - National language
 - **English** - Primary development language  
@@ -277,11 +277,11 @@ POST /api/text-to-speech
 
 ## 🆘 Support
 
-For support, email support@agrisaarthi.com or join our community:
+For support, email support@Agrosaathi.com or join our community:
 
-- **Telegram**: [AgriSaarthi Community](https://t.me/agrisaarthi)
+- **Telegram**: [Agrosaathi Community](https://t.me/Agrosaathi)
 - **WhatsApp**: +91-XXXX-XXXXXX (Farmer Support)
-- **Website**: [www.agrisaarthi.com](https://agrisaarthi.com)
+- **Website**: [www.Agrosaathi.com](https://Agrosaathi.com)
 
 ## 📄 License
 
@@ -298,4 +298,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Built with ❤️ for Indian Farmers**
 
-*AgriSaarthi - Empowering Agriculture through AI*
+*Agrosaathi - Empowering Agriculture through AI*

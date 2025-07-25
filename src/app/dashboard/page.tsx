@@ -425,7 +425,7 @@ export default function Dashboard() {
                 <span className="text-white font-bold text-lg">🌾</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">AgriSaarthi</h1>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Agrosaathi</h1>
                 <p className="text-sm text-gray-600 dark:text-gray-300">Your AI Farming Companion</p>
               </div>
             </div>

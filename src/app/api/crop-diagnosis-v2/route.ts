@@ -710,7 +710,7 @@ export async function POST(request: NextRequest) {
 // GET endpoint for testing API configuration
 export async function GET() {
   return NextResponse.json({
-    status: 'AgriSaarthi Crop Diagnosis API - Multi-AI Powered',
+    status: 'Agrosaathi Crop Diagnosis API - Multi-AI Powered',
     version: '3.0',
     availableServices: {
       gemini: !!GEMINI_API_KEY,

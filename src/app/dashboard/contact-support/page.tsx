@@ -11,7 +11,7 @@ export default function ContactSupport() {
         <p className="text-gray-700 dark:text-gray-300 mb-4">Need help? Our support team is here for you.</p>
         <div className="mb-4">
           <span className="font-semibold text-gray-900 dark:text-white">Email:</span>
-          <a href="mailto:support@agrisaarthi.com?subject=AgriSaarthi%20Support" className="ml-2 text-blue-600 dark:text-blue-400 underline">support@agrisaarthi.com</a>
+          <a href="mailto:support@Agrosaathi.com?subject=Agrosaathi%20Support" className="ml-2 text-blue-600 dark:text-blue-400 underline">support@Agrosaathi.com</a>
         </div>
         <div className="text-sm text-gray-500 dark:text-gray-400">We aim to respond within 24 hours.</div>
       </div>

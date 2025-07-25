@@ -24,7 +24,7 @@ export default function TermsPage() {
             <p>Welcome toAgrosaathi. By using our service, you agree to these terms.</p>
             
             <h2 className="text-xl font-semibold text-gray-900 mt-6 mb-3">1. Service Description</h2>
-            <p>AgriSaarthi provides AI-powered agricultural assistance including crop diagnosis, market analysis, and farming guidance.</p>
+            <p>Agrosaathi provides AI-powered agricultural assistance including crop diagnosis, market analysis, and farming guidance.</p>
             
             <h2 className="text-xl font-semibold text-gray-900 mt-6 mb-3">2. User Responsibilities</h2>
             <p>Users are responsible for providing accurate information and using the service responsibly.</p>
@@ -33,7 +33,7 @@ export default function TermsPage() {
             <p>We respect your privacy and protect your personal information as described in our Privacy Policy.</p>
             
             <h2 className="text-xl font-semibold text-gray-900 mt-6 mb-3">4. Disclaimer</h2>
-            <p>AgriSaarthi provides information for educational purposes. Always consult with agricultural experts for critical decisions.</p>
+            <p>Agrosaathi provides information for educational purposes. Always consult with agricultural experts for critical decisions.</p>
           </div>
         </div>
       </div>

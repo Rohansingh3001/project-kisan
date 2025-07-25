@@ -102,7 +102,7 @@ export default function LandingPage() {
     {
       name: "Ramesh Kumar",
       location: "Punjab",
-      quote: "AgriSaarthi saved my 5-acre wheat crop from disease. Great market alerts too!",
+      quote: "Agrosaathi saved my 5-acre wheat crop from disease. Great market alerts too!",
       rating: 5,
       crop: "Wheat",
       savings: "₹2.5L saved"
@@ -137,7 +137,7 @@ export default function LandingPage() {
                 <span className="text-white font-bold">🌾</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">AgriSaarthi</h1>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Agrosaathi</h1>
               </div>
             </div>
             
@@ -176,7 +176,7 @@ export default function LandingPage() {
               <Sprout className="w-5 h-5 text-white" />
             </div>
             <div>
-              <span className="font-bold text-gray-900 dark:text-white text-lg">AgriSaarthi</span>
+              <span className="font-bold text-gray-900 dark:text-white text-lg">Agrosaathi</span>
               <div className="text-xs text-green-600 dark:text-green-400 font-medium">Your AI Farm Assistant</div>
             </div>
           </div>
@@ -650,7 +650,7 @@ export default function LandingPage() {
                 <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl flex items-center justify-center">
                   <Sprout className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-xl font-bold">AgriSaarthi</span>
+                <span className="text-xl font-bold">Agrosaathi</span>
               </div>
               <p className="text-gray-400 mb-4 text-sm leading-relaxed max-w-md">
                 Empowering Indian farmers with AI-powered agricultural intelligence. From disease diagnosis to market insights - your complete farming companion.

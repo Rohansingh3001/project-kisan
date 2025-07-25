@@ -7,10 +7,10 @@ import { AuthProvider } from "@/contexts/AuthContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AgriSaarthi - AI-Powered Farming Assistant",
+  title: "Agrosaathi - AI-Powered Farming Assistant",
   description: "Your personal agricultural companion powered by AI. Get instant crop disease diagnosis, real-time market prices, government schemes, and voice assistance in your native language.",
-  keywords: ["farming", "agriculture", "AI", "crop disease", "market prices", "government schemes", "AgriSaarthi", "farming assistant"],
-  authors: [{ name: "AgriSaarthi Team" }],
+  keywords: ["farming", "agriculture", "AI", "crop disease", "market prices", "government schemes", "Agrosaathi", "farming assistant"],
+  authors: [{ name: "Agrosaathi Team" }],
   viewport: "width=device-width, initial-scale=1",
 };
 
