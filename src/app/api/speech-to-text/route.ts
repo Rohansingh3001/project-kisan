@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-// @ts-ignore
 import FormData from 'form-data';
-import fetch, { Headers } from 'node-fetch';
+import fetch from 'node-fetch';
 
 // Use OpenAI Whisper API for speech-to-text (no Google Cloud required)
 // Requires OPENAI_API_KEY in .env.local
@@ -34,15 +33,14 @@ export async function POST(request: NextRequest) {
         'Authorization': `Bearer ${apiKey}`,
         ...formData.getHeaders()
       },
-      // @ts-ignore
-      body: formData as any
+      body: formData
     });
     if (!openaiRes.ok) {
       const err = await openaiRes.text();
       console.error('OpenAI Whisper API error:', err);
       return NextResponse.json({ error: 'OpenAI Whisper API error', details: err }, { status: 500 });
     }
-    const data = await openaiRes.json() as { text?: string; [key: string]: any };
+    const data = await openaiRes.json() as { text?: string; [key: string]: unknown };
     if (!data.text) {
       console.error('No transcript returned from Whisper:', data);
       return NextResponse.json({ error: 'No transcript returned from Whisper', details: data }, { status: 500 });
