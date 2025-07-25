@@ -500,8 +500,8 @@ export default function LandingPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              "Free to use forever",
-              "Works offline too",
+              "Free for trial",
+              "Saves data offline too",
               "Expert agricultural advice",
               "Government scheme alerts",
               "Community support",
