@@ -1,13 +1,12 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import { getFirestore } from 'firebase-admin/firestore';
 import { initializeApp, applicationDefault } from 'firebase-admin/app';
 
-// Add a type declaration for the global variable
 declare global {
+  // Prevent re-initialization of Firebase Admin
   var _firebaseAdminInitialized: boolean | undefined;
 }
 
-// Only initialize once
 if (!global._firebaseAdminInitialized) {
   initializeApp({
     credential: applicationDefault(),
@@ -17,15 +16,14 @@ if (!global._firebaseAdminInitialized) {
 
 const db = getFirestore();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+export async function POST(request: NextRequest) {
   try {
-    const { name, location, farmSize, language, notifications, voiceAssistant, theme } = req.body;
-    // You should get the user id from session/auth context
-    const userId = req.headers['x-user-id'] as string;
-    if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+    const body = await request.json();
+    const { name, location, farmSize, language, notifications, voiceAssistant, theme } = body;
+    const userId = request.headers.get('x-user-id');
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     await db.collection('users').doc(userId).set({
       name,
       location,
@@ -36,8 +34,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       theme,
       updatedAt: new Date().toISOString(),
     }, { merge: true });
-    return res.status(200).json({ success: true });
-  } catch {
-    return res.status(500).json({ error: 'Failed to update profile' });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 });
   }
 }
