@@ -13,6 +13,7 @@ import { auth } from '@/lib/firebase';
 
 // User profile interface for Auth-only mode
 export interface UserProfile {
+  [key: string]: unknown;
   id: string;
   name: string;
   email: string;
