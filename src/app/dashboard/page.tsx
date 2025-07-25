@@ -217,27 +217,6 @@ export default function Dashboard() {
    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
 
-   // Download My Data
-   const handleDownloadData = () => {
-     const data = JSON.stringify(profile, null, 2);
-     const blob = new Blob([data], { type: 'application/json' });
-     const url = URL.createObjectURL(blob);
-     const a = document.createElement('a');
-     a.href = url;
-     a.download = 'my-agrisaarthi-data.json';
-     document.body.appendChild(a);
-     a.click();
-     document.body.removeChild(a);
-     URL.revokeObjectURL(url);
-     setSuccess('Your data has been downloaded!');
-   };
-
-   // Privacy Policy
-   const handlePrivacyPolicy = () => {
-     window.open('https://agrisaarthi.com/privacy', '_blank');
-   };
-
-   // Delete Account
    const handleDeleteAccount = async () => {
      setShowDeleteConfirm(false);
      setSaving(true);
@@ -248,21 +227,6 @@ export default function Dashboard() {
        setSuccess("Your account has been deleted.");
        // Optionally, trigger logout or redirect
      }, 1200);
-   };
-
-   // Help Center
-   const handleHelpCenter = () => {
-     window.open('https://agrisaarthi.com/help', '_blank');
-   };
-
-   // Contact Support
-   const handleContactSupport = () => {
-     window.location.href = 'mailto:support@agrisaarthi.com?subject=AgriSaarthi%20Support';
-   };
-
-   // Get App
-   const handleGetApp = () => {
-     window.open('https://agrisaarthi.com/app', '_blank');
    };
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { name, value, type } = e.target;
@@ -346,11 +310,6 @@ export default function Dashboard() {
           {/* Preferences */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="flex items-center">
-              <input type="checkbox" name="notifications" checked={form.notifications} onChange={handleChange} className="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded" />
-              <span className="ml-3 text-gray-700 dark:text-gray-300">Enable notifications</span>
-              <Bell className="w-5 h-5 text-green-500 ml-2" />
-            </div>
-            <div className="flex items-center">
               <input type="checkbox" name="voiceAssistant" checked={form.voiceAssistant} onChange={handleChange} className="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded" />
               <span className="ml-3 text-gray-700 dark:text-gray-300">Enable voice assistant</span>
               <Mic className="w-5 h-5 text-green-500 ml-2" />
@@ -364,33 +323,25 @@ export default function Dashboard() {
             </div>
           </div>
           {/* Data & Privacy */}
-          <div className="space-y-3">
-            <button type="button" onClick={handleDownloadData} className="w-full text-left px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-              <div className="font-medium text-gray-900 dark:text-white">Download My Data</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">Get a copy of your data</div>
-            </button>
-            <Link href="/dashboard/privacy-policy" className="w-full block text-left px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-              <div className="font-medium text-gray-900 dark:text-white">Privacy Policy</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300">Review our privacy practices</div>
-            </Link>
-            <button type="button" onClick={() => setShowDeleteConfirm(true)} className="w-full text-left px-4 py-3 bg-red-50 dark:bg-red-900/20 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors">
-              <div className="font-medium text-red-600 dark:text-red-400">Delete Account</div>
-              <div className="text-sm text-red-500 dark:text-red-300">Permanently delete your account</div>
-            </button>
-            {/* Delete Account Modal */}
-            {showDeleteConfirm && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-                <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl p-8 max-w-sm w-full border border-gray-200 dark:border-gray-700">
-                  <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-4">Delete Account</h3>
-                  <p className="text-gray-700 dark:text-gray-300 mb-6">Are you sure you want to permanently delete your account? This action cannot be undone.</p>
-                  <div className="flex justify-end space-x-3">
-                    <button onClick={() => setShowDeleteConfirm(false)} className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white font-semibold">Cancel</button>
-                    <button onClick={handleDeleteAccount} className="px-4 py-2 rounded-lg bg-red-600 text-white font-semibold">Delete</button>
-                  </div>
+          <button
+            type="button"
+            onClick={() => setShowDeleteConfirm(true)}
+            className="w-full text-left px-4 py-3 bg-red-50 dark:bg-red-900/20 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+          >
+            Delete Account
+          </button>
+          {showDeleteConfirm && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+              <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl p-8 max-w-sm w-full border border-gray-200 dark:border-gray-700">
+                <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-4">Delete Account</h3>
+                <p className="text-gray-700 dark:text-gray-300 mb-6">Are you sure you want to permanently delete your account? This action cannot be undone.</p>
+                <div className="flex justify-end space-x-3">
+                  <button onClick={() => setShowDeleteConfirm(false)} className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white font-semibold">Cancel</button>
+                  <button onClick={handleDeleteAccount} className="px-4 py-2 rounded-lg bg-red-600 text-white font-semibold">Delete</button>
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
           {/* Support & App Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
             <div className="space-y-3">
