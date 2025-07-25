@@ -20,22 +20,21 @@ const CropCard = ({ crop, onClick, isSelected }: { crop: Crop; onClick: () => vo
       onClick={onClick}
       whileHover={{ scale: 1.02, y: -2 }}
       whileTap={{ scale: 0.98 }}
-      className={`relative bg-white dark:bg-gray-800 p-4 sm:p-5 rounded-2xl shadow-lg cursor-pointer border transition-all duration-300 hover:shadow-xl overflow-hidden ${
-        isSelected 
-          ? 'border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 shadow-green-200 ring-2 ring-green-200' 
+      className={`relative bg-white dark:bg-gray-800 p-4 sm:p-5 rounded-2xl shadow-lg cursor-pointer border transition-all duration-300 hover:shadow-xl overflow-hidden ${isSelected
+          ? 'border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 shadow-green-200 ring-2 ring-green-200'
           : 'border-gray-200 dark:border-gray-700 hover:border-green-300 hover:shadow-green-100'
-      }`}
+        }`}
     >
       {/* Subtle background pattern */}
       <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gray-50/50 dark:to-gray-900/20"></div>
-      
+
       {/* Content */}
       <div className="relative z-10">
         <div className="text-3xl sm:text-4xl mb-3 text-center transform transition-transform duration-300 hover:scale-110">{crop.emoji}</div>
         <h3 className="font-bold text-center text-gray-900 dark:text-gray-100 text-sm sm:text-base mb-1">{crop.name}</h3>
         <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 text-center font-medium">{crop.season}</p>
       </div>
-      
+
       {/* Selection indicator */}
       {isSelected && (
         <div className="absolute top-2 right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
@@ -127,7 +126,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-green-50/30 dark:from-gray-900 dark:via-gray-850 dark:to-gray-800 relative overflow-hidden">
-      
+
       {/* Desktop Navigation Header */}
       <div className="hidden lg:block fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -140,7 +139,7 @@ export default function LandingPage() {
                 <h1 className="text-xl font-bold text-gray-900 dark:text-white">Agrosaathi</h1>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <Link
                 href="/login"
@@ -158,7 +157,7 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
-      
+
       {/* Subtle Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-20 left-10 text-6xl">🌾</div>
@@ -196,14 +195,14 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
-      
+
       {/* Hero Section */}
       <section ref={heroRef} className="pt-20 lg:pt-24 pb-8 lg:pb-20 relative overflow-hidden">
         {/* Enhanced Background Elements */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/95 via-gray-50/90 to-green-50/60 dark:from-gray-900/95 dark:via-gray-900/90 dark:to-emerald-900/20"></div>
         <div className="absolute top-20 left-10 w-32 h-32 bg-green-200/15 dark:bg-green-700/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-40 right-10 w-40 h-40 bg-emerald-200/15 dark:bg-emerald-700/10 rounded-full blur-3xl"></div>
-        
+
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -212,7 +211,7 @@ export default function LandingPage() {
             className="text-center"
           >
             {/* Badge */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: heroInView ? 1 : 0, scale: heroInView ? 1 : 0.8 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -222,9 +221,9 @@ export default function LandingPage() {
               <span className="hidden sm:inline">AI-Powered Smart Farming Assistant</span>
               <span className="sm:hidden">AI Farming Assistant</span>
             </motion.div>
-            
+
             {/* Main Heading */}
-            <motion.h1 
+            <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: heroInView ? 1 : 0, y: heroInView ? 0 : 30 }}
               transition={{ duration: 0.7, delay: 0.3 }}
@@ -232,12 +231,12 @@ export default function LandingPage() {
             >
               Meet{' '}
               <span className="bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 bg-clip-text text-transparent">
-               Agrosaathi
+                Agrosaathi
               </span>
             </motion.h1>
-            
+
             {/* Subtitle */}
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: heroInView ? 1 : 0, y: heroInView ? 0 : 20 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -245,8 +244,8 @@ export default function LandingPage() {
             >
               Your intelligent farming companion that speaks your language and guides you to better harvests
             </motion.p>
-            
-            <motion.p 
+
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: heroInView ? 1 : 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
@@ -256,7 +255,7 @@ export default function LandingPage() {
             </motion.p>
 
             {/* Enhanced Mobile Quick Actions */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: heroInView ? 1 : 0, y: heroInView ? 0 : 20 }}
               transition={{ duration: 0.6, delay: 0.6 }}
@@ -272,8 +271,8 @@ export default function LandingPage() {
                 {features.slice(0, 4).map((feature, index) => {
                   const Icon = feature.icon;
                   return (
-                    <motion.div 
-                      key={index} 
+                    <motion.div
+                      key={index}
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-200 group"
@@ -290,7 +289,7 @@ export default function LandingPage() {
             </motion.div>
 
             {/* Crop Selection */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: heroInView ? 1 : 0, y: heroInView ? 0 : 20 }}
               transition={{ duration: 0.6, delay: 0.7 }}
@@ -309,7 +308,7 @@ export default function LandingPage() {
                   />
                 ))}
               </div>
-              
+
               {selectedCrop && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -328,72 +327,57 @@ export default function LandingPage() {
             </motion.div>
 
             {/* Enhanced CTA Buttons */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: heroInView ? 1 : 0, y: heroInView ? 0 : 20 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              className="flex flex-col gap-4 justify-center items-center mb-12 lg:mb-16"
-            >
-              <motion.div
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full sm:w-auto"
-              >
-                <Link
-                  href="/login"
-                  className="w-full sm:w-auto bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 hover:from-green-700 hover:via-emerald-700 hover:to-green-800 text-white px-12 py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 transition-all duration-300 shadow-xl hover:shadow-2xl max-w-sm group relative overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-emerald-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <Wheat className="w-6 h-6 group-hover:scale-110 transition-transform relative z-10" />
-                  <span className="relative z-10">Start Farming Smarter</span>
-                  <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform relative z-10" />
-                </Link>
-              </motion.div>
-              
-              <motion.button 
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition-all duration-200 py-3 px-8 rounded-2xl hover:bg-green-50 dark:hover:bg-green-900/20 group border border-transparent hover:border-green-200 dark:hover:border-green-700"
-              >
-                <PlayCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
-                <span className="font-semibold">Watch Demo (2 min)</span>
-              </motion.button>
-            </motion.div>
-
-            {/* Desktop Preview - Hidden on Mobile */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: heroInView ? 1 : 0, y: heroInView ? 0 : 20 }}
               transition={{ duration: 0.6, delay: 0.9 }}
-              className="hidden lg:block bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden max-w-4xl mx-auto"
+              className="hidden lg:block max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+              role="region"
+              aria-label="Agrosaathi Features Dashboard"
             >
-              <div className="bg-gray-50 dark:bg-gray-700 px-6 py-3 border-b border-gray-200 dark:border-gray-600">
+              {/* Top Bar */}
+              <div className="bg-gray-100 dark:bg-gray-700 px-6 py-3 border-b border-gray-200 dark:border-gray-600 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-red-400 rounded-full"></div>
                   <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
                   <div className="w-3 h-3 bg-green-400 rounded-full"></div>
                   <div className="ml-6 text-sm font-medium text-gray-800 dark:text-gray-200 flex items-center gap-2">
                     <Sprout className="w-4 h-4 text-green-600" />
-                   Agrosaathi Dashboard
+                    <span>Agrosaathi Dashboard</span>
                   </div>
                 </div>
+                <span className="text-xs text-gray-500 dark:text-gray-400 italic">Empowering Farmers with Insights</span>
               </div>
-              <div className="p-8 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+              {/* Features Grid */}
+              <div className="p-10 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
+                <h2 className="text-xl font-bold text-center text-gray-800 dark:text-white mb-6">
+                  Smart Agriculture Features
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
                   {features.map((feature, index) => {
                     const Icon = feature.icon;
                     return (
-                      <div key={index} className="text-center">
-                        <div className={`${feature.color} w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-lg`}>
+                      <div
+                        key={index}
+                        className="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-md transition-shadow p-5 text-center border border-gray-100 dark:border-gray-700"
+                      >
+                        <div className={`${feature.color} w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-md`}>
                           <Icon className="w-6 h-6 text-white" />
                         </div>
-                        <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{feature.title}</p>
+                        <h3 className="text-md font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                          {feature.title}
+                        </h3>
+                        {feature.description && (
+                          <p className="text-sm text-gray-600 dark:text-gray-400">{feature.description}</p>
+                        )}
                       </div>
                     );
                   })}
                 </div>
               </div>
             </motion.div>
+
           </motion.div>
         </div>
       </section>
@@ -405,9 +389,9 @@ export default function LandingPage() {
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-green-500 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-emerald-500 rounded-full blur-3xl"></div>
         </div>
-        
+
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: statsInView ? 1 : 0, y: statsInView ? 0 : 20 }}
             transition={{ duration: 0.6 }}
@@ -513,11 +497,11 @@ export default function LandingPage() {
               Everything you need in one intelligent farming app
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               "Free to use forever",
-              "Works offline too", 
+              "Works offline too",
               "Expert agricultural advice",
               "Government scheme alerts",
               "Community support",
@@ -659,7 +643,7 @@ export default function LandingPage() {
                 कृषि सारथी • ਖੇਤੀ ਸਾਰਥੀ • কৃষি সারথী
               </div>
             </div>
-            
+
             <div>
               <h4 className="font-bold text-lg mb-4 text-green-400">Features</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
@@ -669,7 +653,7 @@ export default function LandingPage() {
                 <li>🎤 Voice Assistant</li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-bold text-lg mb-4 text-green-400">Languages</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
@@ -681,7 +665,7 @@ export default function LandingPage() {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 mb-4 md:mb-0 text-sm flex items-center gap-2">
               <span>© 2025Agrosaathi.</span>
