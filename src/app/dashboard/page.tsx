@@ -199,7 +199,7 @@ export default function Dashboard() {
     location?: string;
     farmSize?: string;
     email?: string;
-    [key: string]: any;
+    [key: string]: unknown;
   };
 
   function SettingsPage({ profile, theme, setTheme }: { profile: ProfileType, theme: string, setTheme: (t: string) => void }) {
