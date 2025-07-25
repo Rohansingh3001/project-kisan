@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Camera, TrendingUp, FileText, Mic, Smartphone, Star, PlayCircle, Users, Shield, Globe, CheckCircle, Sprout, Wheat } from 'lucide-react';
+import { ArrowRight, Camera, TrendingUp, FileText, Mic, Smartphone, Star, Users, Shield, Globe, CheckCircle, Sprout } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
