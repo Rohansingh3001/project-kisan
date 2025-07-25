@@ -44,7 +44,7 @@ export default function VoiceInterface() {
       // Get audio from user's microphone
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new window.MediaRecorder(stream);
-      let audioChunks: BlobPart[] = [];
+      const audioChunks: BlobPart[] = [];
 
       mediaRecorder.ondataavailable = (event: BlobEvent) => {
         audioChunks.push(event.data);

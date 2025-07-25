@@ -192,7 +192,16 @@ export default function Dashboard() {
     );
   };
 
-  function SettingsPage({ profile, theme, setTheme }: { profile: any, theme: string, setTheme: (t: string) => void }) {
+  type ProfileType = {
+    id?: string;
+    name?: string;
+    location?: string;
+    farmSize?: string;
+    email?: string;
+    [key: string]: any;
+  };
+
+  function SettingsPage({ profile, theme, setTheme }: { profile: ProfileType, theme: string, setTheme: (t: string) => void }) {
     const [form, setForm] = useState({
       name: profile?.name || "Raj Patel",
       location: profile?.location || "Gujarat, India",
@@ -291,7 +300,7 @@ export default function Dashboard() {
         } else {
           setSuccess("Failed to save settings.");
         }
-      } catch (err) {
+      } catch {
         setSuccess("Error saving settings.");
       }
       setSaving(false);
@@ -445,7 +454,7 @@ export default function Dashboard() {
       case 'voice':
         return <VoiceInterface />;
       case 'settings':
-        return <SettingsPage profile={profile} theme={theme ?? "light"} setTheme={setTheme} />;
+        return <SettingsPage profile={profile ?? {}} theme={theme ?? "light"} setTheme={setTheme} />;
       default:
         return renderHomeContent();
     }
