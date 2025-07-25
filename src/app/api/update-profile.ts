@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       updatedAt: new Date().toISOString(),
     }, { merge: true });
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 });
   }
 }

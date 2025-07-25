@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Camera, Mic, TrendingUp, FileText, Sun, Moon, ArrowLeft, Home, Bell, User, Zap, MapPin, Calendar, Award, Settings, LogOut, Wifi, WifiOff, Info } from 'lucide-react';
+import { Camera, Mic, TrendingUp, FileText, Sun, Moon, Home, Bell, User, Zap, MapPin, Calendar, Award, Settings, LogOut, WifiOff, Info } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
@@ -192,6 +192,7 @@ export default function Dashboard() {
     );
   };
 
+  // Ensure compatibility with UserProfile by adding an index signature
   type ProfileType = {
     id?: string;
     name?: string;
