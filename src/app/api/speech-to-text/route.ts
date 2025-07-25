@@ -1,40 +1,55 @@
 import { NextRequest, NextResponse } from 'next/server';
+import FormData from 'form-data';
 
-// TODO: Replace with actual Google Speech-to-Text integration
-// This is a placeholder implementation
+// Use OpenAI Whisper API for speech-to-text (no Google Cloud required)
+// Requires OPENAI_API_KEY in .env.local
 
 export async function POST(request: NextRequest) {
   try {
     const { audioData, language = 'en' } = await request.json();
-
     if (!audioData) {
-      return NextResponse.json(
-        { error: 'Audio data is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Audio data is required' }, { status: 400 });
+    }
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json({ error: 'OPENAI_API_KEY not set' }, { status: 500 });
     }
 
-    // TODO: Implement actual Google Speech-to-Text API call
-    // Mock response for now
-    const mockTranscriptions = {
-      'en': "My tomato plants are showing yellow leaves. What could be the problem?",
-      'kn': "ನನ್ನ ಟೊಮೇಟೊ ಗಿಡಗಳಲ್ಲಿ ಹಳದಿ ಎಲೆಗಳು ಕಾಣಿಸುತ್ತಿವೆ. ಇದು ಏನು ಸಮಸ್ಯೆ?",
-      'hi': "मेरे टमाटर के पौधों में पीले पत्ते दिख रहे हैं। यह क्या समस्या है?"
-    };
-
-    const transcript = mockTranscriptions[language as keyof typeof mockTranscriptions] || mockTranscriptions.en;
-
-    return NextResponse.json({
-      transcript,
-      confidence: 0.95,
-      language
+    // Decode base64 audio to buffer
+    const audioBuffer = Buffer.from(audioData, 'base64');
+    // Use form-data npm package for Node.js compatibility
+    const formData = new FormData();
+    formData.append('file', audioBuffer, {
+      filename: 'audio.webm',
+      contentType: 'audio/webm',
+      knownLength: audioBuffer.length
     });
+    formData.append('model', 'whisper-1');
+    formData.append('language', language);
+
+    // Call OpenAI Whisper API
+    const openaiRes = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        ...formData.getHeaders()
+      },
+      body: formData as any
+    });
+    if (!openaiRes.ok) {
+      const err = await openaiRes.text();
+      console.error('OpenAI Whisper API error:', err);
+      return NextResponse.json({ error: 'OpenAI Whisper API error', details: err }, { status: 500 });
+    }
+    const data = await openaiRes.json();
+    if (!data.text) {
+      console.error('No transcript returned from Whisper:', data);
+      return NextResponse.json({ error: 'No transcript returned from Whisper', details: data }, { status: 500 });
+    }
+    return NextResponse.json({ transcript: data.text, language });
   } catch (error) {
     console.error('Speech-to-text API error:', error);
-    return NextResponse.json(
-      { error: 'Failed to transcribe audio' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to transcribe audio' }, { status: 500 });
   }
 }
 

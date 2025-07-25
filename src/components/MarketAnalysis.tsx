@@ -2,6 +2,19 @@
 
 import { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, MapPin, Calendar, RefreshCw, Search } from 'lucide-react';
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 interface MarketPrice {
   commodity: string;
@@ -174,22 +187,20 @@ export default function MarketAnalysis() {
           </div>
         </div>
 
-        {/* Commodity Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+        {/* Commodity Category Filters (Oval Pills) */}
+        <div className="flex flex-row flex-wrap gap-2 mb-8 overflow-x-auto scrollbar-hide py-2">
           {filteredCommodities.map(commodity => (
             <button
               key={commodity.id}
               onClick={() => setSelectedCommodity(commodity.id)}
-              className={`p-4 rounded-lg border-2 transition-all ${
-                selectedCommodity === commodity.id
-                  ? 'border-green-500 bg-green-50 dark:bg-green-900/30'
-                  : 'border-gray-200 dark:border-gray-700 hover:border-green-300'
-              }`}
+              className={`px-5 py-2 rounded-xl border text-sm font-semibold transition-all whitespace-nowrap shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400/60 focus:ring-offset-2
+                ${selectedCommodity === commodity.id
+                  ? 'bg-green-600 text-white border-green-600'
+                  : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-100 hover:bg-green-50 dark:hover:bg-green-900/30 hover:border-green-400'}
+              `}
+              style={{ minWidth: 0 }}
             >
-              <div className="text-2xl mb-2">{commodity.icon}</div>
-              <div className="text-sm font-medium text-gray-900 dark:text-white">
-                {commodity.name}
-              </div>
+              {commodity.name}
             </button>
           ))}
         </div>
@@ -250,29 +261,61 @@ export default function MarketAnalysis() {
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             7-Day Price Trend
           </h3>
-          
-          {/* Simple Chart Representation */}
-          <div className="relative h-64">
-            <div className="absolute inset-0 flex items-end space-x-2">
-              {priceHistory.map((point, index) => {
-                const maxPrice = Math.max(...priceHistory.map(p => p.price));
-                const minPrice = Math.min(...priceHistory.map(p => p.price));
-                const height = ((point.price - minPrice) / (maxPrice - minPrice)) * 100;
-                
-                return (
-                  <div key={index} className="flex-1 flex flex-col items-center">
-                    <div 
-                      className="w-full bg-green-500 rounded-t-sm transition-all hover:bg-green-600"
-                      style={{ height: `${height}%` }}
-                      title={`₹${point.price} on ${point.date}`}
-                    />
-                    <div className="text-xs text-gray-600 dark:text-gray-300 mt-2 transform -rotate-45 origin-left">
-                      {new Date(point.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+          <div className="h-64">
+            <Line
+              data={{
+                labels: priceHistory.map(point =>
+                  new Date(point.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })
+                ),
+                datasets: [
+                  {
+                    label: 'Price (₹)',
+                    data: priceHistory.map(point => point.price),
+                    borderColor: '#16a34a',
+                    backgroundColor: 'rgba(34,197,94,0.1)',
+                    pointBackgroundColor: '#16a34a',
+                    pointBorderColor: '#16a34a',
+                    fill: true,
+                    tension: 0.4,
+                  },
+                ],
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                  title: {
+                    display: false,
+                  },
+                  tooltip: {
+                    callbacks: {
+                      label: function(context) {
+                        return `₹${context.parsed.y}`;
+                      }
+                    }
+                  }
+                },
+                scales: {
+                  x: {
+                    grid: {
+                      display: false,
+                    },
+                  },
+                  y: {
+                    grid: {
+                      color: '#e5e7eb',
+                    },
+                    ticks: {
+                      callback: function(value) {
+                        return `₹${value}`;
+                      }
+                    }
+                  }
+                },
+              }}
+            />
           </div>
         </div>
 

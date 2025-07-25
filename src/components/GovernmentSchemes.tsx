@@ -23,13 +23,13 @@ export default function GovernmentSchemes() {
   const [selectedScheme, setSelectedScheme] = useState<Scheme | null>(null);
 
   const categories = [
-    { id: 'all', name: 'All Schemes', icon: '📋' },
-    { id: 'subsidy', name: 'Subsidies', icon: '💰' },
-    { id: 'irrigation', name: 'Irrigation', icon: '💧' },
-    { id: 'seeds', name: 'Seeds & Fertilizers', icon: '🌱' },
-    { id: 'insurance', name: 'Insurance', icon: '🛡️' },
-    { id: 'technology', name: 'Technology', icon: '🚜' },
-    { id: 'credit', name: 'Credit & Loans', icon: '🏦' },
+    { id: 'all', name: 'All Schemes' },
+    { id: 'subsidy', name: 'Subsidies' },
+    { id: 'irrigation', name: 'Irrigation' },
+    { id: 'seeds', name: 'Seeds & Fertilizers' },
+    { id: 'insurance', name: 'Insurance' },
+    { id: 'technology', name: 'Technology' },
+    { id: 'credit', name: 'Credit & Loans' },
   ];
 
   const schemes: Scheme[] = [
@@ -223,68 +223,89 @@ export default function GovernmentSchemes() {
             </div>
           </div>
 
-          {/* Category Filters */}
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
+          {/* Category Filters - Simple Pills */}
+          <div className="flex flex-row flex-wrap gap-2 mb-8 overflow-x-auto scrollbar-hide py-2">
             {categories.map(category => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`p-3 rounded-lg text-sm font-medium transition-all ${
-                  selectedCategory === category.id
-                    ? 'bg-green-600 text-white'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                }`}
+                className={`px-4 py-1.5 rounded-full border text-sm font-medium transition-all whitespace-nowrap focus:outline-none
+                  ${selectedCategory === category.id
+                    ? 'bg-green-600 text-white border-green-600'
+                    : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-100 hover:bg-green-50 dark:hover:bg-green-900/30 hover:border-green-400'}
+                `}
+                style={{ minWidth: 0 }}
               >
-                <div className="text-lg mb-1">{category.icon}</div>
                 {category.name}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Scheme Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Scheme Cards - New Improved Layout */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredSchemes.map(scheme => (
             <div
               key={scheme.id}
-              className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer"
+              className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all flex flex-col gap-4 group hover:ring-2 hover:ring-green-400"
               onClick={() => setSelectedScheme(scheme)}
             >
-              <div className="flex items-start justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">
+              {/* Status Badge */}
+              <span className={`absolute top-4 right-4 px-3 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide ${getStatusColor(scheme.status)}`}>
+                {scheme.status}
+              </span>
+
+              {/* Title & Category */}
+              <div className="space-y-2">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white leading-snug line-clamp-2">
                   {scheme.name}
                 </h3>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(scheme.status)}`}>
-                  {scheme.status}
-                </span>
+                <div className={`inline-block text-sm px-3 py-1 rounded-full font-semibold min-w-0 w-auto truncate
+      ${
+        scheme.category === 'subsidy'
+          ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-200'
+          : scheme.category === 'insurance'
+          ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200'
+          : scheme.category === 'irrigation'
+          ? 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-200'
+          : scheme.category === 'technology'
+          ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-200'
+          : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200'
+      }
+    `}>
+                  {categories.find(c => c.id === scheme.category)?.name || scheme.category}
+                </div>
               </div>
 
-              <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
+              {/* Description */}
+              <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed line-clamp-3">
                 {scheme.description}
               </p>
 
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center gap-2">
-                  <DollarSign className="w-4 h-4 text-green-500" />
-                  <span className="text-sm font-medium text-green-600 dark:text-green-400">
-                    {scheme.subsidy}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4 text-blue-500" />
-                  <span className="text-sm text-gray-600 dark:text-gray-300">
-                    {(scheme.beneficiaries / 1000000).toFixed(1)}M+ beneficiaries
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-orange-500" />
-                  <span className="text-sm text-gray-600 dark:text-gray-300">
-                    Deadline: {scheme.deadline}
-                  </span>
-                </div>
+              {/* Scheme Info Pills */}
+              <div className="flex flex-wrap gap-2">
+                <span className="flex items-center gap-1 text-xs font-medium text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-full">
+                  <DollarSign className="w-4 h-4" />
+                  {scheme.subsidy}
+                </span>
+                <span className="flex items-center gap-1 text-xs font-medium text-blue-700 dark:text-blue-200 bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full">
+                  <Users className="w-4 h-4" />
+                  {(scheme.beneficiaries / 1_000_000).toFixed(1)}M+
+                </span>
+                <span className="flex items-center gap-1 text-xs font-medium text-orange-700 dark:text-orange-300 bg-orange-50 dark:bg-orange-900/20 px-3 py-1 rounded-full">
+                  <Clock className="w-4 h-4" />
+                  {scheme.deadline}
+                </span>
               </div>
 
-              <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+              {/* CTA Button */}
+              <button
+                className="mt-auto w-full bg-green-600 text-white py-2.5 rounded-lg font-semibold hover:bg-green-700 transition-all flex items-center justify-center gap-2"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedScheme(scheme);
+                }}
+              >
                 <FileText className="w-4 h-4" />
                 View Details
               </button>

@@ -6,13 +6,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
-  loginWithEmail, 
+  signupWithEmail, 
   loginWithGoogle, 
-  setupRecaptcha, 
+  verifyOTP, 
+  getAuthErrorMessage,
   sendOTP,
-  verifyOTP,
-  getAuthErrorMessage 
+  setupRecaptcha
 } from '@/lib/auth';
+
+// Remove incorrect import of sendOtpVerification
 import { ConfirmationResult, AuthError } from 'firebase/auth';
 
 type LoginStep = 'input' | 'otp';
@@ -51,7 +53,7 @@ export default function LoginPage() {
       return;
     }
     
-    const { user, profile } = await loginWithEmail(formData.email, formData.password);
+    const { user, profile } = await signupWithEmail(formData.email, formData.password);
     
     if (profile) {
       login(user, profile);
@@ -66,11 +68,8 @@ export default function LoginPage() {
       setError('Please enter your phone number');
       return;
     }
-
-    // Initialize reCAPTCHA
-    const recaptchaVerifier = setupRecaptcha('recaptcha-container');
-    
     try {
+      const recaptchaVerifier = setupRecaptcha('recaptcha-container');
       const confirmation = await sendOTP(formData.phone, recaptchaVerifier);
       setConfirmationResult(confirmation);
       setStep('otp');
@@ -78,10 +77,8 @@ export default function LoginPage() {
       setError('');
     } catch (error: unknown) {
       setError(getAuthErrorMessage(error as AuthError));
-      recaptchaVerifier.clear();
     }
   };
-
   const handleOtpVerification = async () => {
     if (!formData.otp || !confirmationResult) {
       setError('Please enter the OTP code');
@@ -138,13 +135,13 @@ export default function LoginPage() {
 
   const resendOTP = async () => {
     if (otpTimer > 0) return;
-    
     setLoading(true);
     try {
       const recaptchaVerifier = setupRecaptcha('recaptcha-container');
       const confirmation = await sendOTP(formData.phone, recaptchaVerifier);
       setConfirmationResult(confirmation);
       setOtpTimer(60);
+      setFormData(prev => ({ ...prev, otp: '' }));
       setError('');
     } catch (error: unknown) {
       setError(getAuthErrorMessage(error as AuthError));
@@ -152,7 +149,7 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
-
+  // Go back to input step from OTP step
   const goBack = () => {
     setStep('input');
     setConfirmationResult(null);
