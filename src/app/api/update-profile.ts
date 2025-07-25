@@ -4,7 +4,6 @@ import { initializeApp, applicationDefault } from 'firebase-admin/app';
 
 // Add a type declaration for the global variable
 declare global {
-  // eslint-disable-next-line no-var
   var _firebaseAdminInitialized: boolean | undefined;
 }
 
@@ -38,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       updatedAt: new Date().toISOString(),
     }, { merge: true });
     return res.status(200).json({ success: true });
-  } catch (err) {
+  } catch {
     return res.status(500).json({ error: 'Failed to update profile' });
   }
 }
