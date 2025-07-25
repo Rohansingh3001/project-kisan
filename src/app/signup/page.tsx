@@ -532,7 +532,7 @@ export default function SignupPage() {
           <div className="w-20 h-20 bg-gradient-to-br from-green-600 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
             <Leaf className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Join AgriSaarthi</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">JoinAgrosaathi</h1>
           <p className="text-gray-600">Create your account to get started</p>
         </div>
 

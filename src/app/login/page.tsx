@@ -183,7 +183,7 @@ export default function LoginPage() {
             <Leaf className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back!</h1>
-          <p className="text-gray-600">Sign in to continue to AgriSaarthi</p>
+          <p className="text-gray-600">Sign in to continue toAgrosaathi</p>
         </div>
 
         {/* Login Card */}

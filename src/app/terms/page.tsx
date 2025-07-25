@@ -21,7 +21,7 @@ export default function TermsPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-6">Terms of Service</h1>
           
           <div className="prose max-w-none text-gray-700 space-y-4">
-            <p>Welcome to AgriSaarthi. By using our service, you agree to these terms.</p>
+            <p>Welcome toAgrosaathi. By using our service, you agree to these terms.</p>
             
             <h2 className="text-xl font-semibold text-gray-900 mt-6 mb-3">1. Service Description</h2>
             <p>AgriSaarthi provides AI-powered agricultural assistance including crop diagnosis, market analysis, and farming guidance.</p>

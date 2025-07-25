@@ -8,7 +8,7 @@ export default function HelpCenter() {
           <Zap className="w-8 h-8 text-yellow-500 mr-4" />
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Help Center</h1>
         </div>
-        <p className="text-gray-700 dark:text-gray-300 mb-4">Find answers to common questions and get support for using AgriSaarthi.</p>
+        <p className="text-gray-700 dark:text-gray-300 mb-4">Find answers to common questions and get support for usingAgrosaathi.</p>
         <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2">
           <li>How do I update my profile?</li>
           <li>How to use the voice assistant?</li>

@@ -76,7 +76,7 @@ export default function LandingPage() {
     {
       icon: Mic,
       title: "Voice Assistant",
-      description: "Talk to AgriSaarthi in 22+ Indian languages including Hindi, Tamil, Telugu.",
+      description: "Talk toAgrosaathi in 22+ Indian languages including Hindi, Tamil, Telugu.",
       titleHi: "आवाज सहायक",
       color: "bg-orange-500"
     }
@@ -232,7 +232,7 @@ export default function LandingPage() {
             >
               Meet{' '}
               <span className="bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 bg-clip-text text-transparent">
-                AgriSaarthi
+               Agrosaathi
               </span>
             </motion.h1>
             
@@ -374,7 +374,7 @@ export default function LandingPage() {
                   <div className="w-3 h-3 bg-green-400 rounded-full"></div>
                   <div className="ml-6 text-sm font-medium text-gray-800 dark:text-gray-200 flex items-center gap-2">
                     <Sprout className="w-4 h-4 text-green-600" />
-                    AgriSaarthi Dashboard
+                   Agrosaathi Dashboard
                   </div>
                 </div>
               </div>
@@ -507,7 +507,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 lg:mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-              Why Choose AgriSaarthi? 🌟
+              Why ChooseAgrosaathi? 🌟
             </h2>
             <p className="text-lg text-green-100">
               Everything you need in one intelligent farming app
@@ -546,7 +546,7 @@ export default function LandingPage() {
               Success Stories from Real Farmers 👨‍🌾
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              See how AgriSaarthi is transforming lives across India
+              See howAgrosaathi is transforming lives across India
             </p>
           </div>
 
@@ -598,7 +598,7 @@ export default function LandingPage() {
             Ready to Transform Your Farming? 🚀
           </h2>
           <p className="text-lg text-green-100 mb-8">
-            Join thousands of farmers already using AgriSaarthi to increase yields and profits
+            Join thousands of farmers already usingAgrosaathi to increase yields and profits
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
@@ -684,7 +684,7 @@ export default function LandingPage() {
           
           <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 mb-4 md:mb-0 text-sm flex items-center gap-2">
-              <span>© 2025 AgriSaarthi.</span>
+              <span>© 2025Agrosaathi.</span>
               <span className="hidden sm:inline">Built with ❤️ for Indian Farmers 🇮🇳</span>
             </div>
             <div className="flex items-center gap-6 text-gray-400 text-sm">

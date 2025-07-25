@@ -1,4 +1,4 @@
-# AgriSaarthi - AI-Powered Farming Assistant 🌾
+#Agrosaathi - AI-Powered Farming Assistant 🌾
 
 **Your personal agronomist, market analyst, and government scheme navigator - all in your pocket, speaking your language.**
 
@@ -208,7 +208,7 @@ AgriSaarthi supports **22+ Indian languages** to ensure every farmer can use the
 
 ## 🤝 Contributing
 
-We welcome contributions to AgriSaarthi! Please follow these steps:
+We welcome contributions toAgrosaathi! Please follow these steps:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)

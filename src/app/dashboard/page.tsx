@@ -355,7 +355,7 @@ export default function Dashboard() {
               </Link>
               <Link href="/dashboard/get-app" className="w-full block text-left px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                 <div className="font-medium text-gray-900 dark:text-white">Get App</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Download AgriSaarthi mobile app</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">DownloadAgrosaathi mobile app</div>
               </Link>
             </div>
             <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 space-y-2 text-sm text-gray-600 dark:text-gray-300">
